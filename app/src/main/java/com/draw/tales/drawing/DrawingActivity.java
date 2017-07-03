@@ -62,7 +62,7 @@ public class DrawingActivity extends AppCompatActivity {
     private DatabaseReference dPageRef, dPrevPageRef, dCountRef;
     private StorageReference dStorageRef;
     private String iPageId, iUserId, iGroupId, mYellowText, mFromUser, iFromPageId, mStory, mType, mClickedPrompt;
-    private TextView mBrushSize, mOpacity, mLoadingBg, mPrevText, mPromptText;
+    private TextView mBrushSize, mOpacity, mLoadingBg, mPrevText, mPromptText, mLoadText;
     private ProgressBar mLoadingCircle;
     private ImageView mCurrentColor, mPrevImage;
     private EditText mEditText;
@@ -72,6 +72,7 @@ public class DrawingActivity extends AppCompatActivity {
     private int mPageCount;
     private TwoPathPage mPrevTwoPage;
     private OnePathPage mPrevOnePage;
+    private View mLoadBg;
 
     private TranslateAnimation mAppearAnimation;
 
@@ -241,7 +242,9 @@ public class DrawingActivity extends AppCompatActivity {
                                 mPrevText.setText(mPrevOnePage.getImageText());
                             }
                             mPrevHeight = mPrevImage.getHeight() + mPrevText.getHeight() + mHidePrevPageLayout.getHeight();
-
+                            mLoadText.setVisibility(View.GONE);
+                            mLoadBg.setVisibility(View.GONE);
+                            mDrawView.setClickable(true);
                         }
                     }.execute();
                 }
@@ -251,6 +254,10 @@ public class DrawingActivity extends AppCompatActivity {
 
                 }
             };
+        } else {
+            mLoadBg.setVisibility(View.GONE);
+            mLoadText.setVisibility(View.GONE);
+            mDrawView.setClickable(true);
         }
     }
 
@@ -416,6 +423,9 @@ public class DrawingActivity extends AppCompatActivity {
         mCurrentColor = (ImageView) findViewById(R.id.current_color);
         mEditText = (EditText) findViewById(R.id.yellow_edit_text);
 
+        mLoadBg = findViewById(R.id.drawing_loading_bg);
+        mLoadText = (TextView) findViewById(R.id.drawing_loading_text);
+
         // Prev Page
         mViewPrevPageLayout = (RelativeLayout) findViewById(R.id.view_prev_page);
         mHidePrevPageLayout = (RelativeLayout) findViewById(R.id.hide_prev_page_layout);
@@ -430,6 +440,7 @@ public class DrawingActivity extends AppCompatActivity {
         mPromptText.setTypeface(tf);
         pv.setTypeface(tf);
         tv.setTypeface(tf);
+        mLoadText.setTypeface(tf);
 
         mPromptText.setText(mClickedPrompt);
 
@@ -503,7 +514,8 @@ public class DrawingActivity extends AppCompatActivity {
         return new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
-                if (taskSnapshot.getDownloadUrl() != null) {
+                @SuppressWarnings("VisibleForTests") Uri dl = taskSnapshot.getDownloadUrl();
+                if (dl != null) {
                     new AsyncTask<Void,Void,Void>(){
                         @Override
                         protected void onPreExecute() {
@@ -513,7 +525,7 @@ public class DrawingActivity extends AppCompatActivity {
 
                         @Override
                         protected Void doInBackground(Void... voids) {
-                            String imagePath = taskSnapshot.getDownloadUrl().toString();
+                            @SuppressWarnings("VisibleForTests") String imagePath = taskSnapshot.getDownloadUrl().toString();
 
                             dPageRef.child(Constants.IMAGE_TEXT).setValue(mYellowText);
                             dPageRef.child(Constants.IMAGE_PATH).setValue(imagePath);

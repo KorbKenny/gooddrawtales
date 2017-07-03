@@ -48,6 +48,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#ffffff"
+            android:clickable="false"
+            android:longClickable="false"
             />
 
 
@@ -386,5 +388,24 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/loading_drawing_circle"
         android:visibility="gone"/>
+
+    <View
+        android:id="@+id/drawing_loading_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:alpha=".3"
+        />
+    <TextView
+        android:id="@+id/drawing_loading_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Loading..."
+        android:gravity="center"
+        android:textSize="60sp"
+        android:textColor="@color/hilite_green"
+        android:fontFamily="casual"
+        android:layout_marginBottom="60dp"
+        />
 
 </RelativeLayout>

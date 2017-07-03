@@ -43,14 +43,15 @@ import java.util.List;
  */
 
 public class MainFragment extends Fragment {
-    private String iContinuePageId;
+    private String iContinuePageId, iMyUserId;
     private CardView mBeginButton, mContinueButton;
     private ImageView mBookmark;
     private String mBookmark1,mBookmark2,mBookmark3,mBookmark4,mBookimage1,mBookimage2,mBookimage3,mBookimage4,mBookmarkChosen;
     private boolean tuturial = false;
     private FirebaseDatabase db;
-    private TextView mPageCountView;
-    private int mPageCount;
+    private TextView mPageCountView, mUnreadCountView;
+    private int mPageCount, mHistoryCount, mUnreadCount;
+    private boolean historyLoaded, pageCountLoaded;
 
     @Nullable
     @Override
@@ -64,6 +65,7 @@ public class MainFragment extends Fragment {
 
         simpleSetup(view);
         getMyBookmarks();
+        getMyHistory();
         getPageCount();
 
         mBookmark.setOnClickListener(new View.OnClickListener() {
@@ -131,6 +133,44 @@ public class MainFragment extends Fragment {
         });
     }
 
+    private void unreadPagesStuff(){
+        mUnreadCount = mPageCount - mHistoryCount;
+        showUnreadCount();
+
+    }
+
+    private void getMyHistory() {
+        DatabaseReference historyRef = db.getReference(Constants.USERS_REF).child(iMyUserId).child(Constants.READ_HISTORY_REF);
+        historyRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(final DataSnapshot dataSnapshot) {
+                new AsyncTask<Void,Void,Void>(){
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+                        if(dataSnapshot!=null){
+                            long historyTemp = dataSnapshot.getChildrenCount();
+                            mHistoryCount = (int) historyTemp;
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        historyLoaded = true;
+                        if(pageCountLoaded){
+                            unreadPagesStuff();
+                        }
+                    }
+                }.execute();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     private void getPageCount() {
         DatabaseReference pageCountRef = db.getReference(Constants.GLOBAL).child(Constants.FIRST_STORY).child(Constants.PAGE_COUNT);
         pageCountRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -146,6 +186,10 @@ public class MainFragment extends Fragment {
 
                         @Override
                         protected void onPostExecute(Void aVoid) {
+                            pageCountLoaded = true;
+                            if(historyLoaded){
+                                unreadPagesStuff();
+                            }
                             showPageCount();
                         }
                     }.execute();
@@ -157,6 +201,17 @@ public class MainFragment extends Fragment {
 
             }
         });
+    }
+
+    private void showUnreadCount() {
+        if(getContext()!=null) {
+            if(mUnreadCount > 0){
+                mUnreadCountView.setAlpha(1.0f);
+                mUnreadCountView.setText("" + mUnreadCount + " unread!");
+                Animation animation = AnimationUtils.loadAnimation(getContext(),R.anim.unread_count_in);
+                mUnreadCountView.startAnimation(animation);
+            }
+        }
     }
 
     private void showPageCount() {
@@ -301,14 +356,22 @@ public class MainFragment extends Fragment {
         db = FirebaseDatabase.getInstance();
         mBeginButton = (CardView) view.findViewById(R.id.button_beginning);
         mContinueButton = (CardView) view.findViewById(R.id.button_continue);
+
         Typeface typeface= Typeface.createFromAsset(getActivity().getAssets(), Constants.FONT);
+
         mBookmark = (ImageView)view.findViewById(R.id.main_bookmark);
         mPageCountView = (TextView)view.findViewById(R.id.main_page_count);
+        mUnreadCountView = (TextView)view.findViewById(R.id.main_unread_count);
         TextView beginText = (TextView)view.findViewById(R.id.button_start_beginning_text);
         TextView continueText = (TextView)view.findViewById(R.id.button_continue_text);
+
         beginText.setTypeface(typeface);
         continueText.setTypeface(typeface);
         mPageCountView.setTypeface(typeface);
+        mUnreadCountView.setTypeface(typeface);
+
+        pageCountLoaded = false;
+        historyLoaded = false;
 
         SharedPreferences sp = getActivity().getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE);
         iContinuePageId = sp.getString(Constants.CONTINUE_PAGE_ID,null);
@@ -317,6 +380,8 @@ public class MainFragment extends Fragment {
             Me.getInstance().setUserId(sp.getString(Constants.MY_USER_ID,null));
             Me.getInstance().setUsername(sp.getString(Constants.MY_USER_NAME,null));
         }
+
+        iMyUserId = Me.getInstance().getUserId();
 
         if(iContinuePageId!=null){
             mContinueButton.setVisibility(View.VISIBLE);

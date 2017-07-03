@@ -3,7 +3,7 @@
     <string name="firebase_error_login">Error Logging In</string>
     <string name="facebook_app_id">1634120376895007</string>
     <string name="empty_buttons">What will you do?</string>
-    <string name="empty_button_if_you_drew">Somebody else should write the this option.</string>
+    <string name="empty_button_if_you_drew">Somebody else should write this option.</string>
 
     <string name="global">Global</string>
     <string name="first_story">FirstStory</string>

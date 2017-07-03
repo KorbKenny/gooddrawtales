@@ -41,7 +41,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 public class DrawingActivitySquare extends AppCompatActivity {
-    private String iGroupId, iUserId, mType, mGroupName;
+    private String iGroupId, iUserId, mType, mGroupName, mSketchPageId;
     private DrawViewSquare mDrawView;
     private CardView mCard;
     private Button mUndoButton, mSaveButton;
@@ -49,7 +49,7 @@ public class DrawingActivitySquare extends AppCompatActivity {
     private TextView mLoadingBg, mOpacity, mBrushSize, mTitle;
     private ProgressBar mLoadingCircle;
     private Bitmap mBitmapToSave;
-    private boolean drawingGroupCover;
+    private boolean drawingGroupCover, justSketching;
     private float mDrawViewWidth;
 
     private FirebaseDatabase db;
@@ -146,6 +146,7 @@ public class DrawingActivitySquare extends AppCompatActivity {
 
     private void simpleSetup() {
         drawingGroupCover = getIntent().getBooleanExtra(Constants.FROM_GROUP_COVER_INTENT,false);
+        justSketching = getIntent().getBooleanExtra(Constants.SKETCH_INTENT,false);
 
         mDrawView = (DrawViewSquare) findViewById(R.id.dsquare_drawview);
         mCard = (CardView) findViewById(R.id.dsquare_card);
@@ -174,9 +175,19 @@ public class DrawingActivitySquare extends AppCompatActivity {
 
         if(drawingGroupCover) {
             setupGroupCoverStuff();
+        } else if(justSketching) {
+            setupSketchStuff();
         } else {
             setupUserIconStuff();
         }
+    }
+
+    private void setupSketchStuff(){
+        mTitle.setText("Sketch!");
+        dDbRef = db.getReference(Constants.USERS_REF).child(iUserId).child(Constants.SKETCHBOOK);
+        mSketchPageId = dDbRef.push().getKey();
+        dDbRef = db.getReference(Constants.USERS_REF).child(iUserId).child(Constants.SKETCHBOOK).child(mSketchPageId);
+        dStorageRef = FirebaseStorage.getInstance().getReference(Constants.USERS_REF).child(iUserId).child(Constants.SKETCHBOOK).child(mSketchPageId).child(Constants.FILE_NAME);
     }
 
     private void setupGroupCoverStuff() {
@@ -186,8 +197,6 @@ public class DrawingActivitySquare extends AppCompatActivity {
         mTitle.setText("Draw the group's cover!");
         dDbRef = db.getReference(Constants.GROUPS).child(iGroupId).child(Constants.GROUP_COVER);
         dStorageRef = FirebaseStorage.getInstance().getReference(mType).child(iGroupId).child(Constants.GROUP_COVER).child(Constants.FILE_NAME);
-
-
     }
 
     private void setupUserIconStuff() {
@@ -263,9 +272,11 @@ public class DrawingActivitySquare extends AppCompatActivity {
         Bitmap bitmapToSave;
         if(drawingGroupCover){
             bitmapToSave = Bitmap.createScaledBitmap(bitmap,1000,1000,false);
+        } else if(justSketching){
+            bitmapToSave = Bitmap.createScaledBitmap(bitmap,1000,1000,false);
         } else {
             Bitmap tempMap = Bitmap.createScaledBitmap(bitmap,1000,1000,false);
-            bitmapToSave = BitmapManipulation.cropToCircle(bitmap);
+            bitmapToSave = BitmapManipulation.cropToCircle(tempMap);
         }
 
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
@@ -297,11 +308,12 @@ public class DrawingActivitySquare extends AppCompatActivity {
         return new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
-                if (taskSnapshot.getDownloadUrl() != null) {
+                @SuppressWarnings("VisibleForTests") Uri dl = taskSnapshot.getDownloadUrl();
+                if (dl != null) {
                     new AsyncTask<Void,Void,Void>(){
                         @Override
                         protected Void doInBackground(Void... voids) {
-                            String imagePath = taskSnapshot.getDownloadUrl().toString();
+                            @SuppressWarnings("VisibleForTests") String imagePath = taskSnapshot.getDownloadUrl().toString();
                             dDbRef.setValue(imagePath);
                             SharedPreferences sp = getSharedPreferences(Constants.SHARED_PREF,MODE_PRIVATE);
                             sp.edit().putString(Constants.MY_USER_IMAGE,imagePath);
@@ -324,6 +336,11 @@ public class DrawingActivitySquare extends AppCompatActivity {
                 Intent intent = new Intent(DrawingActivitySquare.this, GroupCoverActivity.class);
                 intent.putExtra(Constants.GROUP_INTENT, iGroupId);
                 intent.putExtra(Constants.GROUP_NAME, mGroupName);
+                startActivity(intent);
+                finish();
+            } else if(justSketching){
+                Intent intent = new Intent(DrawingActivitySquare.this, MainActivity.class);
+                intent.putExtra(Constants.USER, true);
                 startActivity(intent);
                 finish();
             } else {

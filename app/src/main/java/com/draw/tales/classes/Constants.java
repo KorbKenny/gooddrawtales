@@ -31,6 +31,9 @@ public class Constants {
     public static final String ACCEPTED_INTENT = "AcceptedIntent";
     public static final String FROM_GROUP_COVER_INTENT = "GroupCoverIntent";
     public static final String USER_INTENT = "UserIntent";
+    public static final String SKETCH_INTENT = "SketchIntent";
+    public static final String FROM_USER_TO_OTHER_INTENT = "FromUserToOther";
+    public static final String REFRESHING_SKETCHES_INTENT = "RefreshingSketches";
 
     public static final String GROUP_COVER = "Cover";
 
@@ -99,6 +102,9 @@ public class Constants {
     public static final String USER_IMAGE = "UserImage";
     public static final String USER_DESCRIPTION = "UserDescription";
     public static final String BOOKMARKS = "Bookmarks";
+    public static final String SKETCHBOOK = "Sketchbook";
+
+    public static final String READ_HISTORY_REF = "History";
 
     public static final String BOOKMARK_IMAGE = "BookmarkImage";
     public static final String BOOKMARK_ID = "BookmarkId";

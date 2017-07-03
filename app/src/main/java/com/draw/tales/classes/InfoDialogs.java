@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -24,12 +25,15 @@ import com.draw.tales.R;
 import com.draw.tales.groups.DBSQLiteHelper;
 import com.draw.tales.groups.GroupsRecyclerAdapter;
 import com.draw.tales.main.MainActivity;
+import com.draw.tales.sketchbook.SketchbookActivity;
 import com.draw.tales.user.OtherUserActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 import java.util.zip.Inflater;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by KorbBookProReturns on 4/25/17.
@@ -415,4 +419,77 @@ public class InfoDialogs {
         return descriptionDialog;
     }
 
+
+    //==============================================================================================
+    //
+    //                                  DELETE SKETCH DIALOG
+    //
+    //==============================================================================================
+    public static Dialog deleteSketchDialog(final Activity context,final String key, final String myUserId) {
+
+        LayoutInflater inflater = context.getLayoutInflater();
+        final View alertView = inflater.inflate(R.layout.dialog_go_back, null);
+
+        final AlertDialog leaveDialog = new AlertDialog.Builder(context)
+                .setView(alertView)
+                .setPositiveButton("Yes, delete", null)
+                .setNegativeButton("No, keep it!", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                .create();
+
+        leaveDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                TextView tv = (TextView) alertView.findViewById(R.id.go_back_dialog_description);
+                TextView title = (TextView) alertView.findViewById(R.id.go_back_dialog_title);
+
+                title.setText("Delete this sketch?");
+                String deleteText = "Are you sure??";
+                tv.setText(deleteText);
+
+                Button button = ((AlertDialog) dialogInterface).getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        new AsyncTask<Void, Void, Void>() {
+                            @Override
+                            protected void onPreExecute() {
+                                TextView tv = (TextView) alertView.findViewById(R.id.go_back_dialog_description);
+                                tv.setText("Deleting... hang tight!");
+                            }
+
+                            @Override
+                            protected Void doInBackground(Void... voids) {
+                                FirebaseDatabase db = FirebaseDatabase.getInstance();
+
+                                Log.d(TAG, "doInBackground: KEY:"+key);
+
+                                DatabaseReference sketchbookRef = db
+                                        .getReference(Constants.USERS_REF).child(myUserId).child(Constants.SKETCHBOOK).child(key);
+
+                                sketchbookRef.setValue(null);
+                                return null;
+                            }
+
+                            @Override
+                            protected void onPostExecute(Void aVoid) {
+                                Intent intent = new Intent(context, SketchbookActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra(Constants.REFRESHING_SKETCHES_INTENT,true);
+                                intent.putExtra(Constants.USER_INTENT,myUserId);
+                                context.startActivity(intent);
+                                leaveDialog.dismiss();
+                            }
+                        }.execute();
+                    }
+                });
+            }
+        });
+
+        return leaveDialog;
+    }
 }

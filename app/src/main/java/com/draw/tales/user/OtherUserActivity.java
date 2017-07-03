@@ -39,6 +39,7 @@ public class OtherUserActivity extends AppCompatActivity {
     private PagesRecyclerAdapter mAdapter;
     private List<UserPage> mUserPageList;
     private List<GroupLite> mGroupsList;
+    private boolean fromMyUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,8 @@ public class OtherUserActivity extends AppCompatActivity {
 
     private void simpleSetup() {
         iUserId = getIntent().getStringExtra(Constants.USER_INTENT);
+        fromMyUser = getIntent().getBooleanExtra(Constants.FROM_USER_TO_OTHER_INTENT,false);
+
         mUserNameView = (TextView) findViewById(R.id.other_name);
         mUserDescriptionView = (TextView) findViewById(R.id.other_description);
         mInviteButton = (TextView) findViewById(R.id.other_invite);
@@ -76,7 +79,7 @@ public class OtherUserActivity extends AppCompatActivity {
         iMyUserId = Me.getInstance().getUserId();
 
         CardView inviteCard = (CardView) findViewById(R.id.other_invite_card);
-        if(iUserId.equals(iMyUserId)){
+        if(iUserId.equals(iMyUserId)||fromMyUser){
             inviteCard.setVisibility(View.GONE);
         }
     }

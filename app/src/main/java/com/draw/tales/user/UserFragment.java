@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import com.draw.tales.drawing.DrawingActivitySquare;
 import com.draw.tales.groups.DBSQLiteHelper;
 import com.draw.tales.login.LoginActivity;
 import com.draw.tales.main.MainActivity;
+import com.draw.tales.sketchbook.SketchbookActivity;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -43,7 +45,8 @@ import com.squareup.picasso.Picasso;
 
 public class UserFragment extends Fragment {
     private String iMyUserId, mDescription, mUserName, mImagePath;
-    private TextView mDescriptionView, mUserNameView, mLogOut, mEdit;
+    private TextView mDescriptionView, mUserNameView, mLogOut, mEdit, mSketchText, mViewProfileText, mViewSketchbookText;
+    private CardView mSketchCard, mViewProfileCard, mViewSketchbookCard;
     private ImageView mUserImage;
     private FirebaseDatabase db;
     private SharedPreferences sp;
@@ -81,6 +84,36 @@ public class UserFragment extends Fragment {
             }
         });
 
+        mSketchCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), DrawingActivitySquare.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra(Constants.SKETCH_INTENT,true);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+
+        mViewProfileCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(),OtherUserActivity.class);
+                intent.putExtra(Constants.USER_INTENT,iMyUserId);
+                intent.putExtra(Constants.FROM_USER_TO_OTHER_INTENT,true);
+                startActivity(intent);
+            }
+        });
+
+        mViewSketchbookCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(),SketchbookActivity.class);
+                intent.putExtra(Constants.USER_INTENT,iMyUserId);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void simpleSetup(View view) {
@@ -95,6 +128,13 @@ public class UserFragment extends Fragment {
         mUserNameView = (TextView) view.findViewById(R.id.my_user_name);
         mUserImage = (ImageView) view.findViewById(R.id.my_user_image);
         mEdit = (TextView) view.findViewById(R.id.my_user_edit);
+
+        mSketchCard = (CardView) view.findViewById(R.id.my_user_sketch_card);
+        mSketchText = (TextView) view.findViewById(R.id.my_user_sketch_text);
+        mViewProfileCard = (CardView) view.findViewById(R.id.my_user_view_card);
+        mViewProfileText = (TextView) view.findViewById(R.id.my_user_view_text);
+        mViewSketchbookCard = (CardView) view.findViewById(R.id.my_user_sketchbook_card);
+        mViewSketchbookText = (TextView) view.findViewById(R.id.my_user_sketchbook_text);
 
         iMyUserId = Me.getInstance().getUserId();
         mUserName = Me.getInstance().getUsername();
@@ -119,6 +159,9 @@ public class UserFragment extends Fragment {
         mUserNameView.setTypeface(typeface);
         mDescriptionView.setTypeface(typeface);
         mEdit.setTypeface(typeface);
+        mViewProfileText.setTypeface(typeface);
+        mSketchText.setTypeface(typeface);
+        mViewSketchbookText.setTypeface(typeface);
 
 
 
