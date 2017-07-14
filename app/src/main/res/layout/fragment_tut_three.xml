@@ -2,6 +2,30 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/crumpled_paper_bg_purp">
+                android:background="#00000000">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/tut_three_lets_begin_card"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_margin="40dp"
+        >
+        <TextView
+            android:id="@+id/tut_three_lets_begin_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Let's begin!"
+            android:textSize="40sp"
+            android:fontFamily="casual"
+            android:textColor="@color/white"
+            android:shadowRadius="3"
+            android:shadowDy="3"
+            android:shadowDx="3"
+            android:shadowColor="@color/black"
+            android:textStyle="bold"
+            android:background="@drawable/green_gradient"/>
+
+    </android.support.v7.widget.CardView>
 
 </RelativeLayout>

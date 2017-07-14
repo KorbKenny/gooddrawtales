@@ -13,8 +13,9 @@
         android:gravity="center_horizontal"
         android:layout_marginTop="16dp"
         android:fontFamily="casual"
-        android:text="Add Bookmark"/>
+        android:text="Bookmarks"/>
     <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -23,19 +24,64 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_margin="16dp">
+            android:layout_margin="16dp"
+            android:gravity="center">
             <com.draw.tales.classes.PageImageView
                 android:id="@+id/bookmark_11"
                 android:layout_width="match_parent"
                 android:scaleType="centerCrop"
                 android:layout_height="wrap_content"
                 android:background="@drawable/crumpled_paper_bg_square"/>
-            <ImageView
-                android:layout_width="wrap_content"
+
+            <LinearLayout
+                android:id="@+id/book_11_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="16dp"
-                android:src="@drawable/smallbookmarkred"/>
+                android:orientation="vertical"
+                android:layout_centerInParent="true"
+                android:background="#55000000">
+
+            <TextView
+                android:id="@+id/bookmark_11_replace"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Replace"
+                android:textColor="@color/hilite_green"
+                android:gravity="center_horizontal"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:shadowColor="@color/black"
+                android:shadowDx="3"
+                android:shadowDy="3"
+                android:shadowRadius="5"
+                />
+                <TextView
+                    android:id="@+id/bookmark_11_or"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="or"
+                    android:textColor="@color/white"
+                    android:gravity="center_horizontal"
+                    android:textSize="18sp"
+                    android:shadowColor="@color/black"
+                    android:shadowDx="3"
+                    android:shadowDy="3"
+                    android:shadowRadius="3"/>
+            <TextView
+                android:id="@+id/bookmark_11_travel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Open Page"
+                android:gravity="center_horizontal"
+                android:textColor="@color/hilite_blue"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:shadowColor="@color/black"
+                android:shadowDx="3"
+                android:shadowDy="3"
+                android:shadowRadius="5"/>
+            </LinearLayout>
+
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/add_bookmark_2"
@@ -50,12 +96,54 @@
                 android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
                 android:background="@drawable/crumpled_paper_bg_square"/>
-            <ImageView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/book_22_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="16dp"
-                android:src="@drawable/smallbookmarkblue"/>
+                android:orientation="vertical"
+                android:layout_centerInParent="true"
+                android:background="#55000000">
+
+                <TextView
+                    android:id="@+id/bookmark_22_replace"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Replace"
+                    android:textColor="@color/hilite_green"
+                    android:gravity="center_horizontal"
+                    android:textSize="32sp"
+                    android:textStyle="bold"
+                    android:shadowColor="@color/black"
+                    android:shadowDx="3"
+                    android:shadowDy="3"
+                    android:shadowRadius="5"
+                    />
+                <TextView
+                    android:id="@+id/bookmark_22_or"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="or"
+                    android:textColor="@color/white"
+                    android:gravity="center_horizontal"
+                    android:textSize="18sp"
+                    android:shadowColor="@color/black"
+                    android:shadowDx="3"
+                    android:shadowDy="3"
+                    android:shadowRadius="3"/>
+                <TextView
+                    android:id="@+id/bookmark_22_travel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Open Page"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/hilite_blue"
+                    android:textSize="32sp"
+                    android:textStyle="bold"
+                    android:shadowColor="@color/black"
+                    android:shadowDx="3"
+                    android:shadowDy="3"
+                    android:shadowRadius="5"/>
+            </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
 
@@ -78,12 +166,54 @@
                 android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
                 android:background="@drawable/crumpled_paper_bg_square"/>
-            <ImageView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/book_33_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="16dp"
-                android:src="@drawable/smallbookmarkyellow"/>
+                android:orientation="vertical"
+                android:layout_centerInParent="true"
+                android:background="#55000000">
+
+                <TextView
+                    android:id="@+id/bookmark_33_replace"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Replace"
+                    android:textColor="@color/hilite_green"
+                    android:gravity="center_horizontal"
+                    android:textSize="32sp"
+                    android:textStyle="bold"
+                    android:shadowColor="@color/black"
+                    android:shadowDx="3"
+                    android:shadowDy="3"
+                    android:shadowRadius="5"
+                    />
+                <TextView
+                    android:id="@+id/bookmark_33_or"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="or"
+                    android:textColor="@color/white"
+                    android:gravity="center_horizontal"
+                    android:textSize="18sp"
+                    android:shadowColor="@color/black"
+                    android:shadowDx="3"
+                    android:shadowDy="3"
+                    android:shadowRadius="3"/>
+                <TextView
+                    android:id="@+id/bookmark_33_travel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Open Page"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/hilite_blue"
+                    android:textSize="32sp"
+                    android:textStyle="bold"
+                    android:shadowColor="@color/black"
+                    android:shadowDx="3"
+                    android:shadowDy="3"
+                    android:shadowRadius="5"/>
+            </LinearLayout>
         </RelativeLayout>
 
         <RelativeLayout
@@ -98,12 +228,54 @@
             android:layout_height="wrap_content"
             android:background="@drawable/crumpled_paper_bg_square"
             android:scaleType="centerCrop"/>
-            <ImageView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/book_44_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="16dp"
-                android:src="@drawable/smallbookmarkpurple"/>
+                android:orientation="vertical"
+                android:layout_centerInParent="true"
+                android:background="#55000000">
+
+                <TextView
+                    android:id="@+id/bookmark_44_replace"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Replace"
+                    android:textColor="@color/hilite_green"
+                    android:gravity="center_horizontal"
+                    android:textSize="32sp"
+                    android:textStyle="bold"
+                    android:shadowColor="@color/black"
+                    android:shadowDx="3"
+                    android:shadowDy="3"
+                    android:shadowRadius="5"
+                    />
+                <TextView
+                    android:id="@+id/bookmark_44_or"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="or"
+                    android:textColor="@color/white"
+                    android:gravity="center_horizontal"
+                    android:textSize="18sp"
+                    android:shadowColor="@color/black"
+                    android:shadowDx="3"
+                    android:shadowDy="3"
+                    android:shadowRadius="3"/>
+                <TextView
+                    android:id="@+id/bookmark_44_travel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Open Page"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/hilite_blue"
+                    android:textSize="32sp"
+                    android:textStyle="bold"
+                    android:shadowColor="@color/black"
+                    android:shadowDx="3"
+                    android:shadowDy="3"
+                    android:shadowRadius="5"/>
+            </LinearLayout>
         </RelativeLayout>
 
     </LinearLayout>

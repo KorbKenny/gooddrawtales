@@ -4,12 +4,6 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
     android:background="@drawable/purp_gradient">
-    <!--<ImageView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:background="@drawable/crumpled_paper_bg_purp_square"-->
-        <!--android:scaleType="centerInside"-->
-        <!--/>-->
 
     <TextView
         android:id="@+id/bm_text"
@@ -38,12 +32,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/crumpled_paper_bg_square"
                 android:scaleType="centerCrop"/>
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="16dp"
-                android:src="@drawable/smallbookmarkred"/>
+
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="0dp"
@@ -57,12 +46,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/crumpled_paper_bg_square"
                 android:scaleType="centerCrop"/>
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="16dp"
-                android:src="@drawable/smallbookmarkblue"/>
+
         </RelativeLayout>
     </LinearLayout>
 
@@ -85,12 +69,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/crumpled_paper_bg_square"
                 android:scaleType="centerCrop"/>
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="16dp"
-                android:src="@drawable/smallbookmarkyellow"/>
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -104,12 +83,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/crumpled_paper_bg_square"
                 android:scaleType="centerCrop"/>
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="16dp"
-                android:src="@drawable/smallbookmarkpurple"/>
+
         </RelativeLayout>
 
     </LinearLayout>

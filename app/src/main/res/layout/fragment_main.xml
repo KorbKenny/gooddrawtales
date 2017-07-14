@@ -3,21 +3,62 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/crumpled_paper_bg_purp">
+    android:background="#00000000">
 
     <com.draw.tales.classes.CoverImageView
         android:id="@+id/main_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/adventuretimecover"
+        android:src="@drawable/drawtalesfirstcover"
         android:scaleType="centerCrop"
         />
+
+    <LinearLayout
+        android:id="@+id/main_illustrated_by_layout"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/main_image"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp">
+
+        <TextView
+            android:id="@+id/main_illustrated_by_by"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="cover by"
+            android:fontFamily="casual"
+            android:textColor="@color/white"
+            android:shadowColor="@color/black"
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:shadowRadius="3"
+            android:layout_marginBottom="-4dp"
+            />
+
+        <TextView
+            android:id="@+id/main_illustrated_by_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="korbkenny"
+            android:fontFamily="casual"
+            android:textColor="@color/white"
+            android:shadowColor="@color/black"
+            android:shadowRadius="3"
+            android:shadowDy="3"
+            android:shadowDx="3"
+            android:textSize="24sp"
+            />
+
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/main_page_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/main_image"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:alpha="0"
         android:textColor="@color/white"
         android:shadowColor="@color/black"
@@ -26,14 +67,15 @@
         android:shadowRadius="3"
         android:textSize="16sp"
         android:layout_marginBottom="8dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         />
+
     <TextView
         android:id="@+id/main_unread_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/main_image"
         android:layout_alignParentRight="true"
+        android:layout_above="@id/main_page_count"
         android:alpha="0"
         android:textColor="@color/white"
         android:shadowColor="@color/black"

@@ -52,7 +52,6 @@ public class SketchbookActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     private void simpleSetup() {

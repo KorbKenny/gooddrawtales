@@ -33,6 +33,7 @@ public class Constants {
     public static final String USER_INTENT = "UserIntent";
     public static final String SKETCH_INTENT = "SketchIntent";
     public static final String FROM_USER_TO_OTHER_INTENT = "FromUserToOther";
+    public static final String FROM_MAIN_TO_OTHER_INTENT = "FromMainToOther";
     public static final String REFRESHING_SKETCHES_INTENT = "RefreshingSketches";
 
     public static final String GROUP_COVER = "Cover";

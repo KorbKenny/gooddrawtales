@@ -21,8 +21,6 @@ public class TutorialPagerAdapter extends FragmentPagerAdapter {
                 return new TutOne();
             case 1:
                 return new TutTwo();
-            case 2:
-                return new TutThree();
             default:
                 return null;
         }
@@ -30,6 +28,6 @@ public class TutorialPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 2;
     }
 }

@@ -115,7 +115,7 @@ public class DBSQLiteHelper extends SQLiteOpenHelper {
                 String members = cursor.getString(cursor.getColumnIndex(G_COL_MEMBERS));
                 int updated = cursor.getInt(cursor.getColumnIndex(G_COL_UPDATED));
 
-                GroupLite g = new GroupLite(id,name,type,members,updated);
+                GroupLite g = new GroupLite(id,name,type,members,updated,0);
                 gList.add(g);
                 cursor.moveToNext();
             }

@@ -9,16 +9,18 @@ public class GroupLite {
     private int mType;
     private String mMembers;
     private int mUpdated;
+    private int mPageCount;
 
     public GroupLite() {
     }
 
-    public GroupLite(String id, String name, int type, String members, int updated) {
+    public GroupLite(String id, String name, int type, String members, int updated, int pageCount) {
         mId = id;
         mName = name;
         mType = type;
         mMembers = members;
         mUpdated = updated;
+        mPageCount = pageCount;
     }
 
     public String getId() {
@@ -59,6 +61,14 @@ public class GroupLite {
 
     public void setUpdated(int updated) {
         mUpdated = updated;
+    }
+
+    public int getPageCount() {
+        return mPageCount;
+    }
+
+    public void setPageCount(int pageCount) {
+        mPageCount = pageCount;
     }
 }
 

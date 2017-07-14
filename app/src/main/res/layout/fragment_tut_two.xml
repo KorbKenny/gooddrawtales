@@ -2,6 +2,43 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/crumpled_paper_bg_purp">
+                android:background="#00000000">
+    <LinearLayout
+        android:id="@+id/tut_two_linear"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="32dp">
+        <TextView
+            android:id="@+id/tut_two_main_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="8dp"
+            android:textSize="18sp"
+            android:textColor="@color/hilite_blue"
+            android:text="Once you find a blank page, you can draw! You can view the previous page and which option you clicked from here to remind you of what you're supposed to be drawing.\n\nTry to stick with what was written with the option as the action of the protagonist, but you can add what happens as a result of that action (here, we look at the camera like the option said, but we add the creature)!"
+            />
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/tutorial_drawing"
+            android:scaleType="fitStart"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tut_two_so_read_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tut_two_linear"
+        android:text="So read as many pages down as many paths as you want and get a gist of how it's played. You can bookmark pages, see who drew/wrote what, check out other users, invite them to a private group, bookmark pages, and more. Explore!"
+        android:textSize="20sp"
+        android:gravity="center_horizontal"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:textColor="@color/white"/>
 
 </RelativeLayout>

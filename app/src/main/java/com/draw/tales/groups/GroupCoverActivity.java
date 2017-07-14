@@ -20,6 +20,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -52,7 +54,7 @@ import java.util.List;
 
 public class GroupCoverActivity extends AppCompatActivity {
     private static final String TAG = "ok";
-    private TextView mTitle, mMembers, mInfo;
+    private TextView mTitle, mMembers, mInfo, mUnreadCountView, mPageCountView;
     private CardView mStartButton, mContinueButton;
     private SquareImageView mCoverImage;
     private FirebaseDatabase db;
@@ -83,6 +85,10 @@ public class GroupCoverActivity extends AppCompatActivity {
     private List<String> mAllUserIds;
     private Typeface typeface;
 
+    private int mPageCount, mUnreadCount, mHistoryCount;
+    private boolean historyLoaded = false;
+    private boolean pageCountLoaded = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +99,10 @@ public class GroupCoverActivity extends AppCompatActivity {
         getThisGroup();
 
         inviteSomeone();
+
+        getMyHistory();
+
+        getPageCount();
 
         //=============================================================
         //                  Title
@@ -238,6 +248,100 @@ public class GroupCoverActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 }
+            }
+        });
+    }
+
+    private void getPageCount() {
+        DatabaseReference pageCountRef = db.getReference(Constants.GROUPS).child(iGroupId).child(Constants.PAGE_COUNT);
+        pageCountRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(final DataSnapshot dataSnapshot) {
+                if(dataSnapshot!=null){
+                    new AsyncTask<Void,Void,Void>(){
+                        @Override
+                        protected Void doInBackground(Void... voids) {
+                            mPageCount = 0;
+                            if(dataSnapshot.getValue()!=null) {
+                                mPageCount = dataSnapshot.getValue(Integer.class);
+                            }
+                            return null;
+                        }
+
+                        @Override
+                        protected void onPostExecute(Void aVoid) {
+                            pageCountLoaded = true;
+                            if(historyLoaded){
+                                unreadPagesStuff();
+                            }
+                            showPageCount();
+                        }
+                    }.execute();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void unreadPagesStuff(){
+        mUnreadCount = mPageCount - mHistoryCount;
+        showUnreadCount();
+
+    }
+
+    private void showUnreadCount() {
+        if(mUnreadCount > 0){
+            mUnreadCountView.setAlpha(1.0f);
+            mUnreadCountView.setText("" + mUnreadCount + " unread!");
+            Animation animation = AnimationUtils.loadAnimation(GroupCoverActivity.this,R.anim.unread_count_in);
+            mUnreadCountView.startAnimation(animation);
+        }
+    }
+
+    private void showPageCount() {
+        if(mPageCount == 1){
+            mPageCountView.setText("" + mPageCount + " page so far");
+        } else {
+            mPageCountView.setText("" + mPageCount + " pages so far");
+        }
+        Animation animation = AnimationUtils.loadAnimation(GroupCoverActivity.this, R.anim.page_count_in);
+        mPageCountView.setAlpha(1.0f);
+        mPageCountView.startAnimation(animation);
+
+    }
+
+    private void getMyHistory() {
+        DatabaseReference historyRef = db.getReference(Constants.USERS_REF).child(iMyUserId).child(Constants.READ_HISTORY_REF).child(Constants.GROUPS).child(iGroupId);
+        historyRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(final DataSnapshot dataSnapshot) {
+                new AsyncTask<Void,Void,Void>(){
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+                        if(dataSnapshot!=null){
+                            long historyTemp = dataSnapshot.getChildrenCount();
+                            mHistoryCount = (int) historyTemp;
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        historyLoaded = true;
+                        if(pageCountLoaded){
+                            unreadPagesStuff();
+                        }
+                    }
+                }.execute();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
     }
@@ -672,7 +776,7 @@ public class GroupCoverActivity extends AppCompatActivity {
                         }
                     }
                 }
-                GroupLite gl = new GroupLite(mThisGroup.getId(),mThisGroup.getName(),mThisGroup.getType(),memberList,mThisGroup.getUpdated());
+                GroupLite gl = new GroupLite(mThisGroup.getId(),mThisGroup.getName(),mThisGroup.getType(),memberList,mThisGroup.getUpdated(),0);
                 DBSQLiteHelper.getInstance(GroupCoverActivity.this).updateGroup(gl);
                 return null;
             }
@@ -707,6 +811,8 @@ public class GroupCoverActivity extends AppCompatActivity {
 
     }
 
+
+
     //==============================================================================================
     //                  Simple Setup
     //==============================================================================================
@@ -718,6 +824,9 @@ public class GroupCoverActivity extends AppCompatActivity {
         mMembers = (TextView)findViewById(R.id.gc_members);
         mInfo = (TextView)findViewById(R.id.gc_info);
         mCoverImage = (SquareImageView) findViewById(R.id.gc_cover);
+
+        mUnreadCountView = (TextView)findViewById(R.id.gc_unread_count);
+        mPageCountView = (TextView)findViewById(R.id.gc_page_count);
 
         mSettingsButton = (ImageView)findViewById(R.id.gc_settings_button);
 
@@ -731,6 +840,9 @@ public class GroupCoverActivity extends AppCompatActivity {
         mMembers.setTypeface(typeface);
         start.setTypeface(typeface);
         continueText.setTypeface(typeface);
+
+        mUnreadCountView.setTypeface(typeface);
+        mPageCountView.setTypeface(typeface);
 
         SharedPreferences sp = getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE);
 

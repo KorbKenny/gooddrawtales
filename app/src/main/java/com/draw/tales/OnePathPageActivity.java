@@ -275,10 +275,22 @@ public class OnePathPageActivity extends AppCompatActivity {
         if(!mThisPage.getImagePath().equals(Constants.DB_NULL)) {
             SharedPreferences sp = getSharedPreferences(Constants.SHARED_PREF, MODE_PRIVATE);
             sp.edit().putString(mStory, mThisPage.getThisPageId()).apply();
+            setHistory();
         } else {
             mInfo.setClickable(false);
             mInfo.setAlpha(0.4f);
         }
+    }
+
+    private void setHistory() {
+        new AsyncTask<Void,Void,Void>(){
+            @Override
+            protected Void doInBackground(Void... voids) {
+                DatabaseReference historyRef = db.getReference(Constants.USERS_REF).child(iMyUserId).child(Constants.READ_HISTORY_REF).child(mType).child(mStory).child(iThisPageId);
+                historyRef.setValue(1);
+                return null;
+            }
+        }.execute();
     }
 
     //==============================================================================================

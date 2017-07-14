@@ -39,7 +39,7 @@ public class OtherUserActivity extends AppCompatActivity {
     private PagesRecyclerAdapter mAdapter;
     private List<UserPage> mUserPageList;
     private List<GroupLite> mGroupsList;
-    private boolean fromMyUser;
+    private boolean fromMyUser, fromMain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +56,7 @@ public class OtherUserActivity extends AppCompatActivity {
     private void simpleSetup() {
         iUserId = getIntent().getStringExtra(Constants.USER_INTENT);
         fromMyUser = getIntent().getBooleanExtra(Constants.FROM_USER_TO_OTHER_INTENT,false);
+        fromMain = getIntent().getBooleanExtra(Constants.FROM_MAIN_TO_OTHER_INTENT,false);
 
         mUserNameView = (TextView) findViewById(R.id.other_name);
         mUserDescriptionView = (TextView) findViewById(R.id.other_description);

@@ -18,10 +18,13 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.draw.tales.AdminActivity;
 import com.draw.tales.R;
+import com.draw.tales.classes.CoverInfo;
 import com.draw.tales.tutorial.TutorialActivity;
 import com.draw.tales.TwoPathPageActivity;
 import com.draw.tales.classes.Bookmark;
@@ -29,6 +32,7 @@ import com.draw.tales.classes.Constants;
 import com.draw.tales.classes.Me;
 import com.draw.tales.classes.PageImageView;
 import com.draw.tales.groups.DBSQLiteHelper;
+import com.draw.tales.user.OtherUserActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,6 +40,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,11 +48,12 @@ import java.util.List;
  */
 
 public class MainFragment extends Fragment {
-    private String iContinuePageId, iMyUserId;
+    private String iContinuePageId, iMyUserId, mCoverId;
     private CardView mBeginButton, mContinueButton;
     private ImageView mBookmark;
     private String mBookmark1,mBookmark2,mBookmark3,mBookmark4,mBookimage1,mBookimage2,mBookimage3,mBookimage4,mBookmarkChosen;
     private boolean tuturial = false;
+    private LinearLayout mIllustratedByLayout;
     private FirebaseDatabase db;
     private TextView mPageCountView, mUnreadCountView;
     private int mPageCount, mHistoryCount, mUnreadCount;
@@ -64,6 +70,7 @@ public class MainFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         simpleSetup(view);
+        setCover();
         getMyBookmarks();
         getMyHistory();
         getPageCount();
@@ -78,31 +85,31 @@ public class MainFragment extends Fragment {
         mBeginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), TwoPathPageActivity.class);
-                intent.putExtra(Constants.PAGE_ID_INTENT, Constants.FIRST_PAGE_ID);
-                intent.putExtra(Constants.TYPE_INTENT, Constants.GLOBAL);
-                intent.putExtra(Constants.STORY_INTENT, Constants.FIRST_STORY);
-                startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.in_from_bottom, R.anim.out_toward_top);
-                getActivity().finish();
+//                Intent intent = new Intent(getActivity(), TutorialActivity.class);
+//                intent.putExtra(Constants.PAGE_ID_INTENT, Constants.FIRST_PAGE_ID);
+//                intent.putExtra(Constants.TYPE_INTENT, Constants.GLOBAL);
+//                intent.putExtra(Constants.STORY_INTENT, Constants.FIRST_STORY);
+//                startActivity(intent);
+//                getActivity().overridePendingTransition(R.anim.in_from_bottom, R.anim.out_toward_top);
+//                getActivity().finish();
 
-//                if(tuturial){
-//                    Intent intent = new Intent(getActivity(), TutorialActivity.class);
-//                    intent.putExtra(Constants.PAGE_ID_INTENT, Constants.FIRST_PAGE_ID);
-//                    intent.putExtra(Constants.TYPE_INTENT, Constants.GLOBAL);
-//                    intent.putExtra(Constants.STORY_INTENT, Constants.FIRST_STORY);
-//                    startActivity(intent);
-//                    getActivity().overridePendingTransition(R.anim.in_from_bottom,R.anim.out_toward_top);
-//                    getActivity().finish();
-//                } else {
-//                    Intent intent = new Intent(getActivity(), TwoPathPageActivity.class);
-//                    intent.putExtra(Constants.PAGE_ID_INTENT, Constants.FIRST_PAGE_ID);
-//                    intent.putExtra(Constants.TYPE_INTENT, Constants.GLOBAL);
-//                    intent.putExtra(Constants.STORY_INTENT, Constants.FIRST_STORY);
-//                    startActivity(intent);
-//                    getActivity().overridePendingTransition(R.anim.in_from_bottom, R.anim.out_toward_top);
-//                    getActivity().finish();
-//                }
+                if(tuturial){
+                    Intent intent = new Intent(getActivity(), TutorialActivity.class);
+                    intent.putExtra(Constants.PAGE_ID_INTENT, Constants.FIRST_PAGE_ID);
+                    intent.putExtra(Constants.TYPE_INTENT, Constants.GLOBAL);
+                    intent.putExtra(Constants.STORY_INTENT, Constants.FIRST_STORY);
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.in_from_bottom,R.anim.out_toward_top);
+                    getActivity().finish();
+                } else {
+                    Intent intent = new Intent(getActivity(), TwoPathPageActivity.class);
+                    intent.putExtra(Constants.PAGE_ID_INTENT, Constants.FIRST_PAGE_ID);
+                    intent.putExtra(Constants.TYPE_INTENT, Constants.GLOBAL);
+                    intent.putExtra(Constants.STORY_INTENT, Constants.FIRST_STORY);
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.in_from_bottom, R.anim.out_toward_top);
+                    getActivity().finish();
+                }
             }
         });
 
@@ -131,6 +138,29 @@ public class MainFragment extends Fragment {
                 }
             }
         });
+
+        mIllustratedByLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), OtherUserActivity.class);
+                intent.putExtra(Constants.USER_INTENT,mCoverId);
+                intent.putExtra(Constants.FROM_MAIN_TO_OTHER_INTENT,true);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void setCover() {
+        List<CoverInfo> mCoverList = new ArrayList<>();
+
+        CoverInfo cover1 = new CoverInfo();
+        cover1.setUserId("bAYwEEAQuzRVvuvxinVN15CcRVO2");
+        cover1.setUserName("kenkrob");
+        cover1.setCover(R.drawable.drawtalesfirstcover);
+
+        mCoverList.add(cover1);
+
+        mCoverId = cover1.getUserId();
     }
 
     private void unreadPagesStuff(){
@@ -140,7 +170,7 @@ public class MainFragment extends Fragment {
     }
 
     private void getMyHistory() {
-        DatabaseReference historyRef = db.getReference(Constants.USERS_REF).child(iMyUserId).child(Constants.READ_HISTORY_REF);
+        DatabaseReference historyRef = db.getReference(Constants.USERS_REF).child(iMyUserId).child(Constants.READ_HISTORY_REF).child(Constants.GLOBAL).child(Constants.FIRST_STORY);
         historyRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
@@ -365,10 +395,16 @@ public class MainFragment extends Fragment {
         TextView beginText = (TextView)view.findViewById(R.id.button_start_beginning_text);
         TextView continueText = (TextView)view.findViewById(R.id.button_continue_text);
 
+        TextView illustratedByText = (TextView)view.findViewById(R.id.main_illustrated_by_by);
+        TextView illustratedByName = (TextView)view.findViewById(R.id.main_illustrated_by_name);
+        mIllustratedByLayout = (LinearLayout)view.findViewById(R.id.main_illustrated_by_layout);
+
         beginText.setTypeface(typeface);
         continueText.setTypeface(typeface);
         mPageCountView.setTypeface(typeface);
         mUnreadCountView.setTypeface(typeface);
+        illustratedByName.setTypeface(typeface);
+        illustratedByText.setTypeface(typeface);
 
         pageCountLoaded = false;
         historyLoaded = false;

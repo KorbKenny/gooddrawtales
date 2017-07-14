@@ -152,6 +152,7 @@ public class UserFragment extends Fragment {
             mEdit.setClickable(true);
         }
 
+        TextView emailUs = (TextView) view.findViewById(R.id.my_user_email_us);
 
         db = FirebaseDatabase.getInstance();
 
@@ -162,6 +163,7 @@ public class UserFragment extends Fragment {
         mViewProfileText.setTypeface(typeface);
         mSketchText.setTypeface(typeface);
         mViewSketchbookText.setTypeface(typeface);
+        emailUs.setTypeface(typeface);
 
 
 

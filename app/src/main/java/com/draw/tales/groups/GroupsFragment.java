@@ -307,7 +307,7 @@ public class GroupsFragment extends Fragment{
                             if (updated){
                                 refreshGroupList();
                             } else {
-                                updateEachGroupsUpdateTime();
+//                                updateNewPages();
                             }
                         }
                     }.execute();
@@ -322,9 +322,24 @@ public class GroupsFragment extends Fragment{
         dGroupsRef.addListenerForSingleValueEvent(mGroupsListener);
     }
 
-    private void updateEachGroupsUpdateTime() {
-
-    }
+//    private void updateNewPages() {
+//        for (int i = 0; i < gList.size(); i++) {
+//            DatabaseReference pagesRef = db.getReference(Constants.GROUPS).child(gList.get(i).getId()).child(Constants.PAGE_COUNT);
+//            pagesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    if(dataSnapshot!=null){
+//                        gList
+//                    }
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//
+//                }
+//            });
+//        }
+//    }
 
     private void refreshGroupList() {
         new AsyncTask<Void,Void,Void>(){
@@ -341,7 +356,7 @@ public class GroupsFragment extends Fragment{
             @Override
             protected void onPostExecute(Void aVoid) {
                 orderList();
-                updateEachGroupsUpdateTime();
+//                updateNewPages();
                 mLoadingLayout.setVisibility(View.GONE);
 
                 if(mInvitesCard.getVisibility()!=View.VISIBLE) {
@@ -508,7 +523,7 @@ public class GroupsFragment extends Fragment{
                                         thisGroupRef.child(Constants.FIRST_PAGE_ID).setValue(p);
                                     }
 
-                                    GroupLite gl = new GroupLite(groupId,mNewGroupName,mOneOrTwo,Me.getInstance().getUsername(),mCurrentTime);
+                                    GroupLite gl = new GroupLite(groupId,mNewGroupName,mOneOrTwo,Me.getInstance().getUsername(),mCurrentTime,0);
                                     DBSQLiteHelper.getInstance(getContext()).addNewGroup(gl);
 
                                     DatabaseReference myUserRef = db.getReference(Constants.USERS_REF).child(iMyUserId).child(Constants.GROUPS).child(groupId);

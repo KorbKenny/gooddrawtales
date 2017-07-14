@@ -16,8 +16,11 @@ import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -481,23 +484,27 @@ public class TwoPathPageActivity extends AppCompatActivity {
             SharedPreferences sp = getSharedPreferences(Constants.SHARED_PREF, MODE_PRIVATE);
             if(mType.equals(Constants.GLOBAL)){
                 sp.edit().putString(Constants.CONTINUE_PAGE_ID, mThisPage.getThisPageId()).apply();
-                new AsyncTask<Void,Void,Void>(){
-                    @Override
-                    protected Void doInBackground(Void... voids) {
-                        DatabaseReference historyRef = db.getReference(Constants.USERS_REF).child(iMyUserId).child(Constants.READ_HISTORY_REF).child(iThisPageId);
-                        historyRef.setValue(1);
-                        return null;
-                    }
-                }.execute();
             } else {
                 sp.edit().putString(mStory,mThisPage.getThisPageId()).apply();
             }
             mBookmarksButton.setClickable(true);
+            setHistory();
         } else {
             mBookmarksButton.setClickable(false);
             mBookmarksButton.setAlpha(0.4f);
             mInfo.setAlpha(0.4f);
         }
+    }
+
+    private void setHistory() {
+        new AsyncTask<Void,Void,Void>(){
+            @Override
+            protected Void doInBackground(Void... voids) {
+                DatabaseReference historyRef = db.getReference(Constants.USERS_REF).child(iMyUserId).child(Constants.READ_HISTORY_REF).child(mType).child(mStory).child(iThisPageId);
+                historyRef.setValue(1);
+                return null;
+            }
+        }.execute();
     }
 
     //==============================================================================================
@@ -542,11 +549,14 @@ public class TwoPathPageActivity extends AppCompatActivity {
             mBookmarksButton.setClickable(false);
             mBookmarksButton.setAlpha(0.4f);
         }
+
         mBookmarksButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!mThisPage.getImagePath().equals(Constants.DB_NULL)) {
-                    createBookmarkDialog();
+                if(mThisPage!=null) {
+                    if (!mThisPage.getImagePath().equals(Constants.DB_NULL)) {
+                        createBookmarkDialog();
+                    }
                 }
             }
         });
@@ -675,39 +685,153 @@ public class TwoPathPageActivity extends AppCompatActivity {
                     loadPicturesIntoBookmarks(b3,mBookimage3);
                     loadPicturesIntoBookmarks(b4,mBookimage4);
 
+
+
+                    TextView replace1 = (TextView) d.findViewById(R.id.bookmark_11_replace);
+                    TextView travel1 = (TextView) d.findViewById(R.id.bookmark_11_travel);
+                    TextView or1 = (TextView) d.findViewById(R.id.bookmark_11_or);
+
+                    TextView replace2 = (TextView) d.findViewById(R.id.bookmark_22_replace);
+                    TextView travel2 = (TextView) d.findViewById(R.id.bookmark_22_travel);
+                    TextView or2 = (TextView) d.findViewById(R.id.bookmark_22_or);
+
+                    TextView replace3 = (TextView) d.findViewById(R.id.bookmark_33_replace);
+                    TextView travel3 = (TextView) d.findViewById(R.id.bookmark_33_travel);
+                    TextView or3 = (TextView) d.findViewById(R.id.bookmark_33_or);
+
+                    TextView replace4 = (TextView) d.findViewById(R.id.bookmark_44_replace);
+                    TextView travel4 = (TextView) d.findViewById(R.id.bookmark_44_travel);
+                    TextView or4 = (TextView) d.findViewById(R.id.bookmark_44_or);
+
+                    Typeface tf = Typeface.createFromAsset(getAssets(),Constants.FONT);
+                    replace1.setTypeface(tf);
+                    travel1.setTypeface(tf);
+                    or1.setTypeface(tf);
+                    replace2.setTypeface(tf);
+                    travel2.setTypeface(tf);
+                    or2.setTypeface(tf);
+                    replace3.setTypeface(tf);
+                    travel3.setTypeface(tf);
+                    or3.setTypeface(tf);
+                    replace4.setTypeface(tf);
+                    travel4.setTypeface(tf);
+                    or4.setTypeface(tf);
+
+
                     View.OnClickListener listener = new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             switch (view.getId()) {
-                                case R.id.bookmark_11:
+                                case R.id.bookmark_11_replace:
                                     dBookmarkRef.child("1").child(Constants.BOOKMARK_ID).setValue(iThisPageId);
                                     dBookmarkRef.child("1").child(Constants.BOOKMARK_IMAGE).setValue(mThisPage.getImagePath());
+                                    Toast.makeText(TwoPathPageActivity.this, "Bookmarked!", Toast.LENGTH_SHORT).show();
+                                    getBookmarks();
                                     break;
-                                case R.id.bookmark_22:
+                                case R.id.bookmark_11_travel:
+                                    Intent intent1 = new Intent(TwoPathPageActivity.this,TwoPathPageActivity.class);
+                                    intent1.putExtra(Constants.PAGE_ID_INTENT,mBookmark1);
+                                    intent1.putExtra(Constants.STORY_INTENT,mStory);
+                                    intent1.putExtra(Constants.TYPE_INTENT,mType);
+                                    intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent1);
+                                    finish();
+                                    break;
+                                case R.id.bookmark_22_replace:
                                     dBookmarkRef.child("2").child(Constants.BOOKMARK_ID).setValue(iThisPageId);
                                     dBookmarkRef.child("2").child(Constants.BOOKMARK_IMAGE).setValue(mThisPage.getImagePath());
+                                    Toast.makeText(TwoPathPageActivity.this, "Bookmarked!", Toast.LENGTH_SHORT).show();
+                                    getBookmarks();
                                     break;
-                                case R.id.bookmark_33:
+                                case R.id.bookmark_22_travel:
+                                    Intent intent2 = new Intent(TwoPathPageActivity.this,TwoPathPageActivity.class);
+                                    intent2.putExtra(Constants.PAGE_ID_INTENT,mBookmark2);
+                                    intent2.putExtra(Constants.STORY_INTENT,mStory);
+                                    intent2.putExtra(Constants.TYPE_INTENT,mType);
+                                    intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent2);
+                                    finish();
+                                    break;
+                                case R.id.bookmark_33_replace:
                                     dBookmarkRef.child("3").child(Constants.BOOKMARK_ID).setValue(iThisPageId);
                                     dBookmarkRef.child("3").child(Constants.BOOKMARK_IMAGE).setValue(mThisPage.getImagePath());
+                                    Toast.makeText(TwoPathPageActivity.this, "Bookmarked!", Toast.LENGTH_SHORT).show();
+                                    getBookmarks();
+
                                     break;
-                                case R.id.bookmark_44:
+
+                                case R.id.bookmark_33_travel:
+                                    Intent intent3 = new Intent(TwoPathPageActivity.this,TwoPathPageActivity.class);
+                                    intent3.putExtra(Constants.PAGE_ID_INTENT,mBookmark3);
+                                    intent3.putExtra(Constants.STORY_INTENT,mStory);
+                                    intent3.putExtra(Constants.TYPE_INTENT,mType);
+                                    intent3.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent3);
+                                    finish();
+                                    break;
+                                case R.id.bookmark_44_replace:
                                     dBookmarkRef.child("4").child(Constants.BOOKMARK_ID).setValue(iThisPageId);
                                     dBookmarkRef.child("4").child(Constants.BOOKMARK_IMAGE).setValue(mThisPage.getImagePath());
+                                    Toast.makeText(TwoPathPageActivity.this, "Bookmarked!", Toast.LENGTH_SHORT).show();
+                                    getBookmarks();
+
+                                    break;
+                                case R.id.bookmark_44_travel:
+                                    Intent intent4 = new Intent(TwoPathPageActivity.this,TwoPathPageActivity.class);
+                                    intent4.putExtra(Constants.PAGE_ID_INTENT,mBookmark4);
+                                    intent4.putExtra(Constants.STORY_INTENT,mStory);
+                                    intent4.putExtra(Constants.TYPE_INTENT,mType);
+                                    intent4.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent4);
+                                    finish();
                                     break;
                                 default:
                                     return;
                             }
 
-                            Toast.makeText(TwoPathPageActivity.this, "Bookmarked!", Toast.LENGTH_SHORT).show();
                             d.dismiss();
                         }
                     };
 
-                    b1.setOnClickListener(listener);
-                    b2.setOnClickListener(listener);
-                    b3.setOnClickListener(listener);
-                    b4.setOnClickListener(listener);
+                    if(mBookimage1!=null) {
+                        travel1.setOnClickListener(listener);
+                        replace1.setOnClickListener(listener);
+                    } else {
+                        travel1.setVisibility(View.GONE);
+                        or1.setVisibility(View.GONE);
+                        replace1.setText("Add");
+                        replace1.setOnClickListener(listener);
+
+                    }
+                    if(mBookimage2!=null) {
+                        travel2.setOnClickListener(listener);
+                        replace2.setOnClickListener(listener);
+                    } else {
+                        travel2.setVisibility(View.GONE);
+                        or2.setVisibility(View.GONE);
+                        replace2.setText("Add");
+                        replace2.setOnClickListener(listener);
+
+                    }
+                    if(mBookimage3!=null) {
+                        travel3.setOnClickListener(listener);
+                        replace3.setOnClickListener(listener);
+                    }else {
+                        travel3.setVisibility(View.GONE);
+                        or3.setVisibility(View.GONE);
+                        replace3.setText("Add");
+                        replace3.setOnClickListener(listener);
+                    }
+                    if(mBookimage4!=null) {
+                        travel4.setOnClickListener(listener);
+                        replace4.setOnClickListener(listener);
+                    }else {
+                        travel4.setVisibility(View.GONE);
+                        or4.setVisibility(View.GONE);
+                        replace4.setText("Add");
+                        replace4.setOnClickListener(listener);
+
+                    }
                 }
             });
 

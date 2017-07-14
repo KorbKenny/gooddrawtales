@@ -2,6 +2,65 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-    android:background="@drawable/crumpled_paper_bg_purp">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:background="#00000000">
+
+    <TextView
+        android:id="@+id/tut_one_welcome_to"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Welcome to"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:fontFamily="casual"/>
+    <ImageView
+        android:id="@+id/tut_one_drawtales"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:src="@drawable/drawtales_new_logo"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_below="@id/tut_one_welcome_to"/>
+    <TextView
+        android:id="@+id/tut_one_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="The endlessly sprawling choose-your-own-adventure story that everybody contributes to in real time."
+        android:textSize="18dp"
+        android:layout_below="@id/tut_one_drawtales"
+        android:gravity="center_horizontal"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:textColor="@color/white"
+        android:fontFamily="casual"/>
+
+
+    <LinearLayout
+        android:id="@+id/tut_one_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/tut_one_description"
+        android:layout_marginTop="32dp">
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/tutorial_page1"
+            android:scaleType="fitStart"/>
+        <TextView
+            android:id="@+id/tut_one_big_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Each page is drawn by someone with the app. Then there are two options below, written by other users. Each option opens up another page that a user has drawn or will draw, with two more option for each page.\n\nSometimes you'll run into empty options, 'What will you do?' where you can write the option yourself! (Keep in mind, if you write an option, you can't draw the page for that option)"
+            android:textSize="18sp"
+            android:textColor="@color/hilite_green"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            />
+    </LinearLayout>
 
 </RelativeLayout>

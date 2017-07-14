@@ -4,7 +4,7 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/crumpled_paper_bg_purp">
+                android:background="#00000000">
 
     <RelativeLayout
         android:id="@+id/my_user_yellow"
@@ -173,6 +173,19 @@
             />
 
     </android.support.v7.widget.CardView>
+
+    <TextView
+        android:id="@+id/my_user_email_us"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/my_user_sketch_card"
+        android:layout_marginTop="16dp"
+        android:textSize="18sp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:textColor="@color/white"
+        android:gravity="center_horizontal"
+        android:text="Send a cover, a sketch, a question, a suggestion, or whatever to us at DrawTalesApp@gmail.com"/>
 
 
 

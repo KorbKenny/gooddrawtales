@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">drawtales</string>
+    <string name="app_name">DrawTales</string>
     <string name="firebase_error_login">Error Logging In</string>
     <string name="facebook_app_id">1634120376895007</string>
     <string name="empty_buttons">What will you do?</string>

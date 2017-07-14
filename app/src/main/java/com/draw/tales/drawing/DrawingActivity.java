@@ -178,7 +178,7 @@ public class DrawingActivity extends AppCompatActivity {
     }
 
     private void getPageCount() {
-        final DatabaseReference firstStoryRef = db.getReference(Constants.GLOBAL).child(Constants.FIRST_STORY);
+        final DatabaseReference firstStoryRef = db.getReference(mType).child(mStory);
         firstStoryRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
@@ -542,6 +542,9 @@ public class DrawingActivity extends AppCompatActivity {
 
                             if(mType.equals(Constants.GLOBAL)){
                                 DatabaseReference pageRef = db.getReference(Constants.GLOBAL).child(Constants.FIRST_STORY).child(Constants.PAGE_COUNT);
+                                pageRef.setValue(mPageCount);
+                            } else {
+                                DatabaseReference pageRef = db.getReference(Constants.GROUPS).child(iGroupId).child(Constants.PAGE_COUNT);
                                 pageRef.setValue(mPageCount);
                             }
 
